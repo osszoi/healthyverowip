@@ -20,11 +20,7 @@ import {
   ToggleButtonGroup
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import {
-  DietType,
-  PhysicalActivity,
-  calculateMacronutrients
-} from '../../core/calculator';
+import { DietType, PhysicalActivity, calculate } from '../../core/calculator';
 
 export const CalcCard = ({ label, value, style = 1 }) => {
   let sx = {};
@@ -77,7 +73,7 @@ export const PlanCalculator = () => {
 
   const onCalculateMacronutrients = () => {
     setResults(
-      calculateMacronutrients(
+      calculate(
         Number(form.age),
         Number(form.weight),
         Number(form.height) > 3
@@ -89,6 +85,8 @@ export const PlanCalculator = () => {
       )
     );
   };
+
+  console.log({ results });
 
   return (
     <>
@@ -103,12 +101,12 @@ export const PlanCalculator = () => {
           sm={6}>
           <TextField
             fullWidth
-            label='Edad'
-            variant='standard'
+            label="Edad"
+            variant="standard"
             onChange={({ target: { value } }) =>
               setForm((p) => ({ ...p, age: value }))
             }
-            type='number'
+            type="number"
           />
         </Grid>
 
@@ -119,12 +117,12 @@ export const PlanCalculator = () => {
           sm={6}>
           <TextField
             fullWidth
-            label='Peso (kg)'
-            variant='standard'
+            label="Peso (kg)"
+            variant="standard"
             onChange={({ target: { value } }) =>
               setForm((p) => ({ ...p, weight: value }))
             }
-            type='number'
+            type="number"
           />
         </Grid>
 
@@ -135,12 +133,12 @@ export const PlanCalculator = () => {
           sm={6}>
           <TextField
             fullWidth
-            label='Estatura (cm)'
-            variant='standard'
+            label="Estatura (cm)"
+            variant="standard"
             onChange={({ target: { value } }) =>
               setForm((p) => ({ ...p, height: value }))
             }
-            type='number'
+            type="number"
           />
         </Grid>
 
@@ -158,8 +156,8 @@ export const PlanCalculator = () => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label='Sexo'
-                variant='standard'
+                label="Sexo"
+                variant="standard"
               />
             )}
           />
@@ -169,7 +167,7 @@ export const PlanCalculator = () => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span>Tipo de dieta</span>
             <ToggleButtonGroup
-              color='secondary'
+              color="secondary"
               value={form.diet}
               exclusive
               onChange={(_, v) => {
@@ -194,7 +192,7 @@ export const PlanCalculator = () => {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span>Nivel de actvidad física</span>
             <ToggleButtonGroup
-              color='secondary'
+              color="secondary"
               value={form.pa}
               exclusive
               onChange={(_, v) => {
@@ -229,7 +227,7 @@ export const PlanCalculator = () => {
           <Button
             fullWidth
             disabled={!valid}
-            variant='contained'
+            variant="contained"
             onClick={onCalculateMacronutrients}>
             Calcular
           </Button>
@@ -248,8 +246,8 @@ export const PlanCalculator = () => {
               md={4}
               flex={1}>
               <CalcCard
-                label='Calorías'
-                value={`${results.calories}`}
+                label="Calorías"
+                value={`${results.macronutrients.calories}`}
                 style={2}
               />
             </Grid>
@@ -259,8 +257,8 @@ export const PlanCalculator = () => {
               md={4}
               flex={1}>
               <CalcCard
-                label='Proteínas'
-                value={`${results.protein} gr`}
+                label="Proteínas"
+                value={`${results.macronutrients.protein} gr`}
               />
             </Grid>
 
@@ -269,8 +267,8 @@ export const PlanCalculator = () => {
               md={4}
               flex={1}>
               <CalcCard
-                label='Carbohidratos'
-                value={`${results.carb} gr`}
+                label="Carbohidratos"
+                value={`${results.macronutrients.carb} gr`}
               />
             </Grid>
 
@@ -279,8 +277,76 @@ export const PlanCalculator = () => {
               md={4}
               flex={1}>
               <CalcCard
-                label='Grasas'
-                value={`${results.fat} gr`}
+                label="Grasas"
+                value={`${results.macronutrients.fat} gr`}
+              />
+            </Grid>
+          </Grid>
+
+          <Divider sx={{ marginTop: 3, marginBottom: 1, fontSize: '2em' }}>
+            Porciones
+          </Divider>
+
+          <Grid
+            container
+            spacing={3}>
+            <Grid
+              item
+              md={4}
+              flex={1}>
+              <CalcCard
+                label="Lácteos"
+                value={results.portions.milk}
+              />
+            </Grid>
+
+            <Grid
+              item
+              md={4}
+              flex={1}>
+              <CalcCard
+                label="Vegetales"
+                value={results.portions.vegetables}
+              />
+            </Grid>
+
+            <Grid
+              item
+              md={4}
+              flex={1}>
+              <CalcCard
+                label="Frutas"
+                value={results.portions.fruits}
+              />
+            </Grid>
+
+            <Grid
+              item
+              md={4}
+              flex={1}>
+              <CalcCard
+                label="Almidones"
+                value={results.portions.almidones}
+              />
+            </Grid>
+
+            <Grid
+              item
+              md={4}
+              flex={1}>
+              <CalcCard
+                label="Proteínas"
+                value={results.portions.proteinas}
+              />
+            </Grid>
+
+            <Grid
+              item
+              md={4}
+              flex={1}>
+              <CalcCard
+                label="Grasas"
+                value={results.portions.grasas}
               />
             </Grid>
           </Grid>

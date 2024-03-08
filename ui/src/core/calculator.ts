@@ -1,3 +1,5 @@
+import { calculatePortions } from './portions';
+
 export enum DietType {
   Keto,
   LowCarb,
@@ -183,5 +185,36 @@ export const calculateMacronutrients = (
     carb: Number((carb / 4).toFixed(0)),
     fat: Number((fat / 9).toFixed(0)),
     calories: Number((protein + carb + fat).toFixed(0))
+  };
+};
+
+export const calculate = (
+  age: number,
+  weight: number,
+  height: number,
+  gender: string,
+  diet: DietType,
+  pa: PhysicalActivity
+) => {
+  const macronutrients = calculateMacronutrients(
+    age,
+    weight,
+    height,
+    gender,
+    diet,
+    pa
+  );
+
+  const portions = calculatePortions(
+    macronutrients.calories || 0,
+    macronutrients.carb,
+    macronutrients.fat,
+    macronutrients.protein,
+    diet
+  );
+
+  return {
+    macronutrients,
+    portions
   };
 };
